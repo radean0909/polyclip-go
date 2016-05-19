@@ -106,10 +106,7 @@ func TestBug3(t *T) {
 			result:   Polygon{{{1, 2}, {2, 2}, {2, 1}}},
 		},
 	}
-	for i, c := range cases {
-		if i != 5 {
-			continue
-		}
+	for _, c := range cases {
 		result := dump(c.subject.Construct(UNION, c.clipping))
 		if result != dump(c.result) {
 			t.Errorf("case UNION:\nsubject:  %v\nclipping: %v\nexpected: %v\ngot:      %v",
