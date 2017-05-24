@@ -540,6 +540,13 @@ func addToGraph(g *polygonGraph, seg segment) {
 		return
 	}
 
+	if _, ok := (*g)[seg.start][seg.end]; ok {
+		// This polygonGraph already has a segment start -> end, adding
+		// start -> end would make the polygon degenerate, so we delete both.
+		delete((*g)[seg.start], seg.end)
+		return
+	}
+
 	if _, ok := (*g)[seg.end][seg.start]; ok {
 		// This polygonGraph already has a segment end -> start, adding
 		// start -> end would make the polygon degenerate, so we delete both.
