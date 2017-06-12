@@ -316,7 +316,6 @@ func TestBug5(t *testing.T) {
 
 func TestSelfIntersect(t *testing.T) {
 	rect1 := Polygon{{{0, 0}, {1, 0}, {1, 1}, {0, 1}}, {{1, 0}, {2, 0}, {2, 1}, {1, 1}}}
-	//rect1 := Polygon{{{0, 0}, {2, 0}, {2, 1}, {0, 1}}}
 	rect2 := Polygon{{{0, 0.25}, {3, 0.25}, {3, 0.75}, {0, 0.75}}}
 
 	expected := []struct {
@@ -342,7 +341,7 @@ func TestSelfIntersect(t *testing.T) {
 		{
 			"xor",
 			XOR,
-			// TODO: This one is a little weird.
+			// TODO: This one is a little weird. It probably shouldn't be self-intersecting.
 			Polygon{{{0, 0}, {1, 0}, {2, 0}, {2, 0.25}, {0, 0.25}}, {{0, 0.75}, {2, 0.75}, {2, 0.25}, {3, 0.25}, {3, 0.75}, {2, 0.75}, {2, 1}, {1, 1}, {0, 1}}},
 		},
 	}
