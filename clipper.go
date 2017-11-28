@@ -94,7 +94,7 @@ func (c *clipper) compute(operation Op) Polygon {
 	numSegments += addPolygonToQueue(&c.eventQueue, c.subject, _SUBJECT)
 	numSegments += addPolygonToQueue(&c.eventQueue, c.clipping, _CLIPPING)
 
-	connector := connector{} // to connect the edge solutions
+	connector := connector{operation: operation} // to connect the edge solutions
 
 	// This is the sweepline. That is, we go through all the polygon edges
 	// by sweeping from left to right.
@@ -139,7 +139,7 @@ func (c *clipper) compute(operation Op) Polygon {
 
 		// optimization 1
 		switch {
-		case operation == INTERSECTION && e.p.X > MINMAX_X:
+		case (operation == INTERSECTION || operation == CLIPLINE) && e.p.X > MINMAX_X:
 			fallthrough
 		case operation == DIFFERENCE && e.p.X > subjectbb.Max.X:
 			return connector.toPolygon()
@@ -243,6 +243,11 @@ func (c *clipper) compute(operation Op) Polygon {
 			}
 
 			// Check if the line segment belongs to the Boolean operation
+			if operation == CLIPLINE {
+				if e.other.inside && e.polygonType == _SUBJECT {
+					connector.add(e.segment())
+				}
+			}
 			switch e.edgeType {
 			case _EDGE_NORMAL:
 				switch operation {
