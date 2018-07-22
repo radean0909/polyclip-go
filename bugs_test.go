@@ -355,3 +355,22 @@ func TestSelfIntersect(t *testing.T) {
 		})
 	}
 }
+
+func TestDifference_bug(t *testing.T) {
+	p1 := Polygon{
+		Contour{
+			Point{X: 99, Y: 164}, Point{X: 114, Y: 108},
+			Point{X: 121, Y: 164},
+		},
+	}
+
+	p2 := Polygon{Contour{
+		Point{X: 114, Y: 0}, Point{X: 161, Y: 0},
+		Point{X: 114, Y: 168},
+	}}
+	want := Polygon{Contour{{114, 168}, {114, 164}, {115.11904761904762, 164}}}
+	result := p2.Construct(DIFFERENCE, p1)
+	if dump(want) != dump(result) {
+		t.Errorf("expected:\n%v\ngot:\n%v", dump(want), dump(result))
+	}
+}
