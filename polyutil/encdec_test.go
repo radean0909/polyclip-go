@@ -21,8 +21,9 @@ package polyutil
 
 import (
 	"bytes"
-	"github.com/akavel/polyclip-go"
 	. "testing"
+
+	"github.com/ctessum/polyclip-go"
 )
 
 func verify(t *T, cond bool, format string, args ...interface{}) {

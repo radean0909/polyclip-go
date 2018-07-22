@@ -25,8 +25,9 @@ package polyutil
 
 import (
 	"fmt"
-	"github.com/akavel/polyclip-go"
 	"io"
+
+	"github.com/ctessum/polyclip-go"
 )
 
 // EncodeContour serializes all points of a specified contour using a simple textual format.

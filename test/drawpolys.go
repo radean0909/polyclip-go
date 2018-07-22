@@ -20,11 +20,12 @@
 package test
 
 import (
-	"github.com/akavel/polyclip-go"
-	"github.com/akavel/polyclip-go/polyutil"
 	"image"
 	"image/color"
 	"image/draw"
+
+	"github.com/ctessum/polyclip-go"
+	"github.com/ctessum/polyclip-go/polyutil"
 )
 
 func max(a float64, b ...float64) float64 {
