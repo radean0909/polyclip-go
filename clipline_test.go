@@ -25,3 +25,19 @@ func TestClipLine(t *testing.T) {
 		t.Errorf("%+v != %+v", r, want)
 	}
 }
+
+func TestClipLine_within(t *testing.T) {
+	subject := Polygon{{
+		{-3999, -3999}, {-3500, -3500},
+	}}
+	clipping := Polygon{{
+		{-4000, -4000}, {0, -4000}, {0, 0}, {-4000, 0}, {-4000, -4000},
+	}}
+	want := Polygon{{
+		{-3500, -3500}, {-3999, -3999},
+	}}
+	r := subject.Construct(CLIPLINE, clipping)
+	if !reflect.DeepEqual(r, want) {
+		t.Errorf("%+v != %+v", r, want)
+	}
+}

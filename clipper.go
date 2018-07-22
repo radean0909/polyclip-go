@@ -91,8 +91,8 @@ func (c *clipper) compute(operation Op) Polygon {
 
 	numSegments := 0
 	// Add each segment to the eventQueue, sorted from left to right.
-	numSegments += addPolygonToQueue(&c.eventQueue, c.subject, _SUBJECT)
-	numSegments += addPolygonToQueue(&c.eventQueue, c.clipping, _CLIPPING)
+	numSegments += addPolygonToQueue(&c.eventQueue, c.subject, _SUBJECT, operation != CLIPLINE)
+	numSegments += addPolygonToQueue(&c.eventQueue, c.clipping, _CLIPPING, true)
 
 	connector := connector{operation: operation} // to connect the edge solutions
 
@@ -515,7 +515,6 @@ func (c *clipper) divideSegment(e *endpoint, p Point) {
 	l := &endpoint{p: p, left: true, polygonType: e.polygonType, other: e.other, edgeType: e.other.edgeType}
 
 	if endpointLess(l, e.other) { // avoid a rounding error. The left event would be processed after the right event
-		// println("Oops")
 		e.other.left = true
 		e.left = false
 	}
@@ -568,12 +567,15 @@ func addToGraph(g *polygonGraph, seg segment) {
 }
 
 // addPolygonToQueue	adds p to the event queue, returning the number of
-// segments that were added.
-func addPolygonToQueue(q *eventQueue, p Polygon, polyType polygonType) int {
+// segments that were added. closed indicates whether the shape is a closed
+// polygon or an open linestring.
+func addPolygonToQueue(q *eventQueue, p Polygon, polyType polygonType, closed bool) int {
 	g := make(polygonGraph)
 	for _, cont := range p {
 		for i := range cont {
-			addToGraph(&g, cont.segment(i))
+			if i <= len(cont)-2 || closed {
+				addToGraph(&g, cont.segment(i))
+			}
 		}
 	}
 	numSegments := 0
