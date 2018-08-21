@@ -374,3 +374,26 @@ func TestDifference_bug(t *testing.T) {
 		t.Errorf("expected:\n%v\ngot:\n%v", dump(want), dump(result))
 	}
 }
+
+func TestInfiniteLoopBug(t *testing.T) {
+	subject := Polygon{Contour{
+		Point{X: 426694.6365274183, Y: -668547.1611580737},
+		Point{X: 426714.57523030025, Y: -668548.9238652373},
+		Point{X: 426745.39648089616, Y: -668550.4651249861},
+	}}
+	clipping := Polygon{Contour{
+		Point{X: 426714.5752302991, Y: -668548.9238652373},
+		Point{X: 426744.63718662335, Y: -668550.0591896093},
+		Point{X: 426745.3964821229, Y: -668550.4652243527},
+	}}
+
+	want := Polygon{Contour{
+		{426694.6365274183, -668547.1611580737}, {426731.5895193888, -668549.5664294426},
+		{426745.39627072256, -668550.4651113059}, {426745.3962772624, -668550.4651148032},
+		{426714.57523030025, -668548.9238652373},
+	}}
+	result := subject.Construct(DIFFERENCE, clipping)
+	if dump(want) != dump(result) {
+		t.Errorf("expected:\n%v\ngot:\n%v", dump(want), dump(result))
+	}
+}

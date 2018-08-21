@@ -402,12 +402,13 @@ func (c *clipper) possibleIntersection(e1, e2 *endpoint) {
 		return // the line segments overlap, but they belong to the same polygon
 	}
 
+	const tol = 3e-14
 	if numIntersections == 1 {
-		if !e1.p.EqualWithin(ip1, 1e-14) && !e1.other.p.EqualWithin(ip1, 1e-14) {
+		if !e1.p.EqualWithin(ip1, tol) && !e1.other.p.EqualWithin(ip1, tol) {
 			// if ip1 is not an endpoint of the line segment associated to e1 then divide "e1"
 			c.divideSegment(e1, ip1)
 		}
-		if !e2.p.EqualWithin(ip1, 1e-14) && !e2.other.p.EqualWithin(ip1, 1e-14) {
+		if !e2.p.EqualWithin(ip1, tol) && !e2.other.p.EqualWithin(ip1, tol) {
 			// if ip1 is not an endpoint of the line segment associated to e2 then divide "e2"
 			c.divideSegment(e2, ip1)
 		}
