@@ -103,7 +103,7 @@ func (se *endpoint) isValidDirection() bool {
 // This is detected by checking if endpoint.isValidDirection() in divideSegment().
 //
 // The other class of non-reductive divisions does create "valid" segments; one
-// being infinitessimally small, and the other which recurses into a similar
+// being infinitesimally small, and the other which recurses into a similar
 // non-reductive division. This happens when the left or right endpoints of the
 // two segments are very close but not equal, the problematic division for which manifests
 // as an intersection point falling outside of the endpoints on a horizontal or vertical line.
