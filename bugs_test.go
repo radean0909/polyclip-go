@@ -380,3 +380,23 @@ func TestSelfIntersect(t *testing.T) {
 		})
 	}
 }
+
+// Bug test from b4c12673bc80394c472b18f168a042f904ec948.
+func TestDifference_bug(t *testing.T) {
+	p1 := polyclip.Polygon{
+		polyclip.Contour{
+			polyclip.Point{X: 99, Y: 164}, polyclip.Point{X: 114, Y: 108},
+			polyclip.Point{X: 121, Y: 164},
+		},
+	}
+
+	p2 := polyclip.Polygon{polyclip.Contour{
+		polyclip.Point{X: 114, Y: 0}, polyclip.Point{X: 161, Y: 0},
+		polyclip.Point{X: 114, Y: 168},
+	}}
+	want := polyclip.Polygon{polyclip.Contour{{114, 168}, {114, 164}, {115.11904761904762, 164}}}
+	result := p2.Construct(polyclip.DIFFERENCE, p1)
+	if dump(want) != dump(result) {
+		t.Errorf("expected:\n%v\ngot:\n%v", dump(want), dump(result))
+	}
+}
