@@ -1,4 +1,4 @@
-module github.com/ctessum/polyclip-go
+module github.com/radean0909/polyclip-go
 
 go 1.12
 
